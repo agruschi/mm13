@@ -6,5 +6,8 @@
 #
 # Dependencies:
 # 	mplayer
+#
+# Usage:
+# 	yuvplay.sh <INPUTFILE>
 
 mplayer -demuxer rawvideo -rawvideo w=352:h=288:format=i420 $1 -loop 0

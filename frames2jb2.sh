@@ -4,6 +4,9 @@
 #
 # Dependencies:
 # 	jbig2enc
+#
+# Usage:
+# 	frames2jb2.sh
 
 for f in out/*.png
 do

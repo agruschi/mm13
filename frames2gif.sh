@@ -4,6 +4,9 @@
 #
 # Dependencies:
 # 	ImageMagick
+#
+# Usage:
+# 	frames2gif.sh
 
 for f in out/*.png
 do
