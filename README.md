@@ -13,3 +13,6 @@ Splits a video to single frames
 
 ## yuvplay.sh
 Playback of YUV videos
+
+## merge.sh
+Merges a set of single frames to a YUV video
