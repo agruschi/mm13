@@ -5,6 +5,15 @@
 #
 # Dependencies:
 # 	ffmpeg
+#
+# Usage:
+# 	split.sh <INPUTFILE> [qcif]
+
+FORMAT='cif'
+if [ $2 ]
+then
+	FORMAT='qcif'
+fi
 
 mkdir -p out
-ffmpeg -s cif -i $1 -r 25 -qscale 1 -f image2 out/images%05d.png
+ffmpeg -s $FORMAT -i $1 -r 25 -qscale 1 -f image2 out/images%05d.png
