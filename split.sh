@@ -7,4 +7,4 @@
 # 	ffmpeg
 
 mkdir -p out
-ffmpeg -s cif -i $1 -r 25 -qscale 0 -f image2 out/images%05d.png
+ffmpeg -s cif -i $1 -r 25 -qscale 1 -f image2 out/images%05d.png
