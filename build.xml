@@ -55,11 +55,40 @@
 			<format property="current.time" pattern="HH:mm:ss" />
         </tstamp>
         <echo>${current.time}</echo>
-		<exec executable="${shell}/frames2jb2.sh" />
+		<exec executable="${shell}/frames2jb2.sh">
+			<arg value="${inputdir}" />
+		</exec>
 		<tstamp>
 			<format property="current.time" pattern="HH:mm:ss" />
         </tstamp>
         <echo>${current.time}</echo>
+	</target>
+
+	<target name="jb2gray" depends="split" description="Convert gray coded frames to jb2">
+		<tstamp>
+			<format property="current.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${current.time}</echo>
+		<exec executable="${shell}/frames2gray2jb2.sh">
+			<arg value="${inputdir}" />
+		</exec>
+		<tstamp>
+			<format property="current.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${current.time}</echo>
+	</target>
+
+	<target name="run-all" depends="compile,split" description="Run all conversion">
+		<echo>JBIG 2 Conversion</echo>
+		<antcall target="jb2">
+			<param name="inputdir" value="out/" />
+		</antcall>
+
+		<echo>JBIG 2 Conversion with Gray code</echo>
+		<antcall target="jb2gray">
+			<param name="inputdir" value="out/" />
+		</antcall>
+
 	</target>
 
 	<target name="clean">
