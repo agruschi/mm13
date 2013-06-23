@@ -8,13 +8,6 @@
 	<property name="test" location="test"/>
 	<property name="bin" location="bin"/>
 
-
-	<path id="classpath">
-		<fileset dir="${jar}/">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
-
 	<target name="init">
 		<tstamp/>
 		<mkdir dir="${bin}/"/>
