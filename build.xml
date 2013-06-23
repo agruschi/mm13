@@ -27,6 +27,18 @@
 		</exec>
 	</target>
 
+	<target name="jb2" description="Convert frames to jb2">
+		<tstamp>
+			<format property="current.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${current.time}</echo>
+		<exec executable="${shell}/frames2jb2.sh" />
+		<tstamp>
+			<format property="current.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${current.time}</echo>
+	</target>
+
 	<target name="clean">
 		<delete dir="${bin}" />
 		<delete dir="${out}" />
