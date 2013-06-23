@@ -25,6 +25,8 @@ do
 
 	convert $f -channel R -separate out/temp.png
 	
+	java -classpath bin/ multimedia2013.GrayCode out/temp.png out/temp.png
+
 	# MSB
 	convert out/temp.png -fx '(int(u*255)&128)' out/tempbp.png
 	jbig2 out/tempbp.png > $f.r.7.jb2
@@ -56,6 +58,8 @@ do
 
 	convert $f -channel G -separate out/temp.png
 	
+	java -classpath bin/ multimedia2013.GrayCode out/temp.png out/temp.png
+
 	# MSB
 	convert out/temp.png -fx '(int(u*255)&128)' out/tempbp.png
 	jbig2 out/tempbp.png > $f.g.7.jb2
@@ -86,6 +90,8 @@ do
 	# ---------- Blue channel --------------------------------------------------
 
 	convert $f -channel B -separate out/temp.png
+	
+	java -classpath bin/ multimedia2013.GrayCode out/temp.png out/temp.png
 	
 	# MSB
 	convert out/temp.png -fx '(int(u*255)&128)' out/tempbp.png
