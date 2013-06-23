@@ -6,7 +6,11 @@
 	<property name="source" location="src"/>
 	<property name="shell" location="sh"/>
 	<property name="test" location="test"/>
+
+	<property name="out" location="out/" />
 	<property name="bin" location="bin"/>
+
+	<property name="testfile" location="test/ducks.y4m"/>
 
 	<target name="init">
 		<tstamp/>
@@ -17,8 +21,15 @@
 		<javac includeantruntime="false" srcdir="${source}" destdir="${bin}" />
 	</target>
 
+	<target name="split" description="Splitting video to frames">
+		<exec executable="${shell}/split.sh">
+			<arg value="${testfile}" />
+		</exec>
+	</target>
+
 	<target name="clean">
 		<delete dir="${bin}" />
+		<delete dir="${out}" />
 	</target>
 
 </project>
