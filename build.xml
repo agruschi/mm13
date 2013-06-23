@@ -8,26 +8,49 @@
 	<property name="test" location="test"/>
 
 	<property name="out" location="out/" />
-	<property name="bin" location="bin"/>
+	<property name="bin" location="bin" />
+	<property name="sliced" location="sliced/" />
 
 	<property name="testfile" location="test/ducks.y4m"/>
 
-	<target name="init">
-		<tstamp/>
+	<target name="init" description="Create output directories">
 		<mkdir dir="${bin}/"/>
+		<mkdir dir="${sliced}/"/>
 	</target>
 
 	<target name="compile" depends="init" description="Compiling sources">
 		<javac includeantruntime="false" srcdir="${source}" destdir="${bin}" />
 	</target>
 
-	<target name="split" description="Splitting video to frames">
+	<target name="split" depends="init" description="Splitting video to frames">
 		<exec executable="${shell}/split.sh">
 			<arg value="${testfile}" />
 		</exec>
 	</target>
 
-	<target name="jb2" description="Convert frames to jb2">
+	<target name="Leberkas" depends="compile,split">
+		<java classname="multimedia2013.Leberkas">
+			<arg value="${orientation}" />
+			<classpath>
+				<pathelement path="${bin}" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="Leberkas-h" depends="compile,split" description="Slice horizontally">
+		<antcall target="Leberkas">
+			<param name="orientation" value="h" />
+		</antcall>
+	</target>
+
+	<target name="Leberkas-v" depends="compile,split" description="Slice horizontally">
+		<antcall target="Leberkas">
+			<param name="orientation" value="v" />
+		</antcall>
+	</target>
+
+
+	<target name="jb2" depends="split" description="Convert frames to jb2">
 		<tstamp>
 			<format property="current.time" pattern="HH:mm:ss" />
         </tstamp>
@@ -42,6 +65,7 @@
 	<target name="clean">
 		<delete dir="${bin}" />
 		<delete dir="${out}" />
+		<delete dir="${sliced}" />
 	</target>
 
 </project>
