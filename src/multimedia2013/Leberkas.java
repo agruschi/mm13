@@ -24,25 +24,63 @@ public class Leberkas {
 		}
 		return returnArray;
 	}
+
+	static int[] getColumn(BufferedImage image, int columnNumber)
+	{
+		int height = image.getHeight();
+		int[] returnArray = new int[height];
+		
+		for(int y = 0; y < height; y++)
+		{
+			returnArray[y] = image.getRGB(columnNumber, y);
+		}
+		return returnArray;
+	}
 	
-	static List<BufferedImage> sliceFrames(List<BufferedImage> inputList) {
+	static List<BufferedImage> sliceFrames(List<BufferedImage> inputList, boolean isHorizontal) {
 		List<BufferedImage> returnList = new LinkedList<BufferedImage>();
 		int width = inputList.get(0).getWidth();
 		int height = inputList.get(0).getHeight();
 		int count = inputList.size();
 		
-		for(int slicedNumber = 0; slicedNumber < height; slicedNumber++)
+		if(isHorizontal)
 		{
-			BufferedImage slicedImage = new BufferedImage(width, count, BufferedImage.TYPE_INT_RGB);
-			for(int y = 0; y < inputList.size(); y++)
+			for(int slicedNumber = 0; slicedNumber < height; slicedNumber++)
 			{
-				int[] line = getLine(inputList.get(y), slicedNumber);
-				for(int i = 0; i < line.length; i++)
+				BufferedImage slicedImage = new BufferedImage(width, count, BufferedImage.TYPE_INT_RGB);
+				for(int y = 0; y < inputList.size(); y++)
 				{
-					slicedImage.setRGB(i, y, line[i]);
+					int[] line = getLine(inputList.get(y), slicedNumber);
+					for(int i = 0; i < line.length; i++)
+					{
+						slicedImage.setRGB(i, y, line[i]);
+					}
 				}
+				returnList.add(slicedImage);
 			}
-			returnList.add(slicedImage);
+		}
+		else
+		{
+			for(int slicedNumber = 0; slicedNumber < width; slicedNumber++)
+			{
+				BufferedImage slicedImage = new BufferedImage(count, height, BufferedImage.TYPE_INT_RGB);
+				for(int x = 0; x < inputList.size(); x++)
+				{
+					int[] column = getColumn(inputList.get(x), slicedNumber);
+					for(int i = 0; i < column.length; i++)
+					{
+						//try
+						//{
+							slicedImage.setRGB(x, i, column[i]);
+						//}
+						//catch(Exception e)
+						//{
+						//	System.out.println(String.format("slicedNumber:%d x:%d i:%d", slicedNumber, x, i));
+						//}
+					}
+				}
+				returnList.add(slicedImage);
+			}
 		}
 		
 		return returnList;
@@ -84,8 +122,14 @@ public class Leberkas {
 	
 	public static void main(String [] args) throws IOException {
 		System.out.println("Start");
+		boolean isHorizontal = (args[0].equals("h"));
+
+		if(isHorizontal) System.out.println("Slicing horizontally");
+		else System.out.println("Slicing vertically");
+
 		List<BufferedImage> imageList = getImageList("out/");
-		List<BufferedImage> slicedList = sliceFrames(imageList);
+		List<BufferedImage> slicedList = sliceFrames(imageList, isHorizontal);
+
 		writeToDirectory(slicedList, "sliced/");
 		System.out.println("done");
 	}
