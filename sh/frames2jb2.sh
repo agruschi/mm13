@@ -8,7 +8,16 @@
 # Usage:
 # 	frames2jb2.sh
 
-for f in out/*.png
+a=out/
+if [ -z "$1" ]
+  then
+    echo "Using default out/"
+   else
+   	a=$1
+   	echo "Using $a"
+fi
+
+for f in $a*.png
 do
 	echo "Processing $f"
 
