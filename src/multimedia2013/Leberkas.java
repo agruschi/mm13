@@ -52,7 +52,7 @@ public class Leberkas {
 		int i = 0;
 		
 		for(BufferedImage image : imageList) {
-			File outputFile = new File(String.format("%sout%d.png",targetDirectory, i));
+			File outputFile = new File(String.format("%sout%05d.png",targetDirectory, i));
 			try {
 			ImageIO.write(image, "png", outputFile);
 			}
