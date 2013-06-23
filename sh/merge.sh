@@ -6,4 +6,4 @@
 # Dependencies:
 # 	ffmpeg
 
-ffmpeg -i out/images%05d.png -pix_fmt yuv420p $1
+ffmpeg -i out/images%05d.png -pix_fmt yuv444p $1

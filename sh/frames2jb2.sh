@@ -10,6 +10,8 @@
 
 for f in out/*.png
 do
+	echo "Processing $f"
+
 	# ---------- Red channel --------------------------------------------------
 
 	convert $f -channel R -separate out/temp.png
