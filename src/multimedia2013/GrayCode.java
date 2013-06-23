@@ -13,9 +13,6 @@ import javax.imageio.stream.FileImageOutputStream;
 
 public class GrayCode {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		try
 		{
@@ -48,17 +45,17 @@ public class GrayCode {
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Usage: graycode <input file> [<output file>]");
-			System.exit(1);
+			System.exit(-1);
 		}
 		catch (FileNotFoundException e)
 		{
 			System.err.println("File not found");
-			System.exit(1);
+			System.exit(-1);
 		}
 		catch (IOException e)
 		{
 			System.err.println("Failed to read/write");
-			System.exit(1);
+			System.exit(-1);
 		}
 		
 	}
