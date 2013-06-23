@@ -1,4 +1,4 @@
-package multimedia13;
+package multimedia2013;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

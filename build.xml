@@ -1,0 +1,31 @@
+<project name="mm13" default="compile" basedir=".">
+	<description>
+		Multimedia 2013
+	</description>
+
+	<property name="source" location="src"/>
+	<property name="shell" location="sh"/>
+	<property name="test" location="test"/>
+	<property name="bin" location="bin"/>
+
+
+	<path id="classpath">
+		<fileset dir="${jar}/">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${bin}/"/>
+	</target>
+
+	<target name="compile" depends="init" description="Compiling sources">
+		<javac includeantruntime="false" srcdir="${source}" destdir="${bin}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${bin}" />
+	</target>
+
+</project>
