@@ -10,4 +10,4 @@
 # 	split.sh <INPUTFILE>
 
 mkdir -p out
-ffmpeg -i $1 -qscale 1 -f image2 out/images%05d.png
+ffmpeg -i $1 -qscale 1 -f image2 split/images%05d.png

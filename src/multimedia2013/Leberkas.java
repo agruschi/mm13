@@ -127,7 +127,7 @@ public class Leberkas {
 		if(isHorizontal) System.out.println("Slicing horizontally");
 		else System.out.println("Slicing vertically");
 
-		List<BufferedImage> imageList = getImageList("out/");
+		List<BufferedImage> imageList = getImageList("split/");
 		List<BufferedImage> slicedList = sliceFrames(imageList, isHorizontal);
 
 		writeToDirectory(slicedList, "sliced/");

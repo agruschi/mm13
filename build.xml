@@ -7,6 +7,7 @@
 	<property name="shell" location="sh"/>
 	<property name="test" location="test"/>
 
+	<property name="split" location="split/" />
 	<property name="out" location="out/" />
 	<property name="bin" location="bin" />
 	<property name="sliced" location="sliced/" />
@@ -15,7 +16,9 @@
 
 	<target name="init" description="Create output directories">
 		<mkdir dir="${bin}/"/>
+		<mkdir dir="${out}/"/>
 		<mkdir dir="${sliced}/"/>
+		<mkdir dir="${split}/"/>
 	</target>
 
 	<target name="compile" depends="init" description="Compiling sources">
@@ -37,63 +40,162 @@
 		</java>
 	</target>
 
-	<target name="Leberkas-h" depends="compile,split" description="Slice horizontally">
+	<target name="Leberkas-h" depends="compile" description="Slice horizontally">
 		<antcall target="Leberkas">
 			<param name="orientation" value="h" />
 		</antcall>
 	</target>
 
-	<target name="Leberkas-v" depends="compile,split" description="Slice horizontally">
+	<target name="Leberkas-v" depends="compile" description="Slice horizontally">
 		<antcall target="Leberkas">
 			<param name="orientation" value="v" />
 		</antcall>
 	</target>
 
 
-	<target name="jb2" depends="split" description="Convert frames to jb2">
-		<tstamp>
-			<format property="current.time" pattern="HH:mm:ss" />
-        </tstamp>
-        <echo>${current.time}</echo>
+	<target name="jb2" depends="" description="Convert frames to jb2">
 		<exec executable="${shell}/frames2jb2.sh">
 			<arg value="${inputdir}" />
 		</exec>
-		<tstamp>
-			<format property="current.time" pattern="HH:mm:ss" />
-        </tstamp>
-        <echo>${current.time}</echo>
 	</target>
 
-	<target name="jb2gray" depends="split" description="Convert gray coded frames to jb2">
-		<tstamp>
-			<format property="current.time" pattern="HH:mm:ss" />
-        </tstamp>
-        <echo>${current.time}</echo>
+	<target name="jb2gray" depends="compile" description="Convert gray coded frames to jb2">
 		<exec executable="${shell}/frames2gray2jb2.sh">
 			<arg value="${inputdir}" />
 		</exec>
-		<tstamp>
-			<format property="current.time" pattern="HH:mm:ss" />
-        </tstamp>
-        <echo>${current.time}</echo>
 	</target>
 
-	<target name="run-all" depends="compile,split" description="Run all conversion">
-		<echo>JBIG 2 Conversion</echo>
+	<target name="run-all" depends="split" description="Run all conversion">
+		<!-- <echo>JBIG 2 Conversion</echo>
+		<tstamp>
+			<format property="start.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${start.time}</echo>
 		<antcall target="jb2">
-			<param name="inputdir" value="out/" />
+			<param name="inputdir" value="${split}" />
 		</antcall>
+		<tstamp>
+			<format property="end.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${end.time}</echo>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
 
 		<echo>JBIG 2 Conversion with Gray code</echo>
+		<tstamp>
+			<format property="start.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${start.time}</echo>
 		<antcall target="jb2gray">
-			<param name="inputdir" value="out/" />
+			<param name="inputdir" value="${split}" />
 		</antcall>
+		<tstamp>
+			<format property="end.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${end.time}</echo>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec> 
+
+		<echo>JBIG 2 Conversion on horizontally sliced images</echo>
+		<tstamp>
+			<format property="start.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${start.time}</echo>
+		<antcall target="Leberkas-h" />
+		<antcall target="jb2">
+			<param name="inputdir" value="${sliced}" />
+		</antcall>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
+		<tstamp>
+			<format property="end.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${end.time}</echo>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
+
+		<echo>JBIG 2 Conversion with Gray code on horizontally sliced images</echo>
+		<tstamp>
+			<format property="start.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${start.time}</echo>
+		<antcall target="Leberkas-h" />
+		<antcall target="jb2gray">
+			<param name="inputdir" value="${sliced}" />
+		</antcall>
+		<delete dir="${sliced}" />
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
+		<tstamp>
+			<format property="end.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${end.time}</echo>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
+
+		<echo>JBIG 2 Conversion on vertically sliced images</echo>
+		<tstamp>
+			<format property="start.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${start.time}</echo>
+		<antcall target="Leberkas-v" />
+		<antcall target="jb2">
+			<param name="inputdir" value="${sliced}" />
+		</antcall>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
+		<tstamp>
+			<format property="end.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${end.time}</echo>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>-->
+
+		<echo>JBIG 2 Conversion with Gray code on vertically sliced images</echo>
+		<tstamp>
+			<format property="start.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${start.time}</echo>
+		<antcall target="Leberkas-v" />
+		<antcall target="jb2gray">
+			<param name="inputdir" value="${sliced}" />
+		</antcall>
+		<delete dir="${sliced}" />
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
+		<tstamp>
+			<format property="end.time" pattern="HH:mm:ss" />
+        </tstamp>
+        <echo>${end.time}</echo>
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="find . -name &quot;*.jb2&quot; -ls | awk '{total += $7} END {print total}'" />
+		</exec>
 
 	</target>
 
 	<target name="clean">
 		<delete dir="${bin}" />
 		<delete dir="${out}" />
+		<delete dir="${split}" />
 		<delete dir="${sliced}" />
 	</target>
 
